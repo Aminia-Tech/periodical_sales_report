@@ -41,6 +41,9 @@ Also print report for particular duration.
         'views/periodical_report.xml',
         'views/report_periodical_sales.xml'
     ],
+    'images': [
+        'static/description/banner.jpg'
+    ],
     'installable': True,
     'application': True,
     'auto_install': False,
