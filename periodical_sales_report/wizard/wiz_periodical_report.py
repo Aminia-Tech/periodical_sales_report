@@ -46,15 +46,17 @@ class PeriodicalReportWizard(models.TransientModel):
     date_from = fields.Date(string='Start Date')
     date_to = fields.Date(string='End Date')
 
+
     @api.multi
     def check_report(self):
-        data = {}
-        data['form'] = self.read(['period','state', 'date_from', 'date_to'])[0]
-        return self._print_report(data)
-
-    def _print_report(self, data):
-        data['form'].update(self.read(['period','state','date_from',
-                                       'date_to'])[0])
-        return self.env['report'].get_action(self, 'periodical_sales_report.'
-                                                   'report_periodical_sales',
-                                             data=data)
+        data = {
+            'ids': self.ids,
+            'model': self._name,
+            'form': {
+                'date_from': self.date_from,
+                'date_to': self.date_to,
+                'period' : self.period,
+                'state' : self.state,
+            },
+        }
+        return self.env.ref('periodical_sales_report.action_report_periodical_sales').report_action(self, data=data)

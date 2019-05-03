@@ -37,7 +37,7 @@
 	 <menuitem id="menu_sale_periodical_report"
                   name="Periodical Sale Reports"
                   action="action_periodical_report_wizard"
-                  parent="sales_team.menu_sale_report"
+                  parent="sale.menu_sale_report"
                   sequence="1"/>
 
 </odoo>

@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<template id="report_periodical_sales">
-    <t t-call="report.external_layout">
-        <t t-foreach="docs" t-as="o">
-            <t t-call="report.internal_layout">
+    <template id="report_periodical_sales">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
                 <div class="page">
-                    <t t-if="(docs.date_from and docs.date_to)">
+                    <t t-if="(date_from and date_to)">
                         <div class="row mt32 mb32">
                             <div>
                                 <p class="text-center">
-                                    Sale order report from date <span t-esc="docs.date_from"/> to date <span t-esc="docs.date_to"/>
+                                    Sale order report from date <span t-esc="date_from"/> to date <span t-esc="date_to"/>
                                 </p>
                             </div>
                         </div>
                     </t>
-                    <t t-else="docs.period">
+                    <t t-else="period">
                         <div class="row mt32 mb32">
                             <div>
                                 <p class="text-center">
-                                    <t t-if="docs.period">Sale order report for
-                                        <span t-esc="dict(o._fields['period'].selection).get(o.period)"/><br/></t>
+                                    Sale order report for: <span t-esc="period"/><br/>
                                 </p>
                             </div>
                         </div>
@@ -34,18 +32,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr t-foreach="orders" t-as="a">
+                            <tr t-foreach="docs" t-as="doc">
                                 <td>
-                                    <span t-esc="a.name" />
+                                    <span t-esc="doc['name']" />
                                 </td>
                                 <td class="text-left" style="white-space: text-nowrap;">
-                                    <span t-esc="a.date_order" />
+                                    <span t-esc="doc['date_order']" />
                                 </td>
                                 <td class="text-left" style="white-space: text-nowrap;">
-                                    <span t-esc="a.partner_id.name" />
+                                    <span t-esc="doc['partner']" />
                                 </td>
                                 <td class="text-right" style="white-space: text-nowrap;">
-                                    <span t-field="a.amount_total" t-options='{"widget": "monetary", "display_currency": a.company_id.currency_id}' />
+                                    <span  t-esc="doc['amount_total']"  />
                                 </td>
                             </tr>
                             <tr>
@@ -61,6 +59,5 @@
                 </div>
             </t>
         </t>
-    </t>
-</template>
+    </template>
 </odoo>
