@@ -3,25 +3,14 @@
     <template id="report_periodical_sales">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
+                <br/>
+                <t t-if="date_from and date_to">
+                    <p class="text-center">Sale order report from date <span t-esc="date_from"/> <span> to date</span> <span t-esc="date_to"/></p>
+                </t>
+                <t t-elif="period">
+                    <p class="text-center"><span>Sale order report for </span><span t-esc="period"/></p>
+                </t>
                 <div class="page">
-                    <t t-if="(date_from and date_to)">
-                        <div class="row mt32 mb32">
-                            <div>
-                                <p class="text-center">
-                                    Sale order report from date <span t-esc="date_from"/> to date <span t-esc="date_to"/>
-                                </p>
-                            </div>
-                        </div>
-                    </t>
-                    <t t-else="period">
-                        <div class="row mt32 mb32">
-                            <div>
-                                <p class="text-center">
-                                    Sale order report for: <span t-esc="period"/><br/>
-                                </p>
-                            </div>
-                        </div>
-                    </t>
                     <table class="table table-condensed">
                         <thead>
                             <tr>
@@ -32,18 +21,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr t-foreach="docs" t-as="doc">
+                            <tr t-foreach="sale_orders" t-as="order">
                                 <td>
-                                    <span t-esc="doc['name']" />
+                                    <span t-esc="order['name']" />
                                 </td>
                                 <td class="text-left" style="white-space: text-nowrap;">
-                                    <span t-esc="doc['date_order']" />
+                                    <span t-esc="order['date_order']" />
                                 </td>
                                 <td class="text-left" style="white-space: text-nowrap;">
-                                    <span t-esc="doc['partner']" />
+                                    <span t-esc="order['partner']" />
                                 </td>
                                 <td class="text-right" style="white-space: text-nowrap;">
-                                    <span  t-esc="doc['amount_total']"  />
+                                    <span  t-esc="order['amount_total']"  />
                                 </td>
                             </tr>
                             <tr>
@@ -60,4 +49,5 @@
             </t>
         </t>
     </template>
+
 </odoo>

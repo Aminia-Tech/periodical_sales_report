@@ -49,6 +49,7 @@ class PeriodicalReportWizard(models.TransientModel):
 
     @api.multi
     def check_report(self):
+        period = self._fields['period'].get_values(self.env)
         data = {
             'ids': self.ids,
             'model': self._name,

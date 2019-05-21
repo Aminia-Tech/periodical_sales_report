@@ -23,7 +23,7 @@
 
 {
     'name' : 'Periodical Sale Report',
-    'version' : '1.0',
+    'version' : '12.0.1',
     'summary': 'Module print daily, last week and last month sale report.',
     'sequence': 16,
     'category': 'Sales',
