@@ -28,30 +28,34 @@ import datetime
 
 class ReportPeriodicalSale(models.AbstractModel):
     _name = 'report.periodical_sales_report.report_periodical_sales'
-    
-    @api.model
-    def render_html(self, docids, data=None):
-        self.model = self.env.context.get('active_model')
-        docs = self.env[self.model].browse(self.env.context.get('active_id'))
-        sales_records = []
-        total_sale = 0.0
 
-        if docs.date_from and docs.date_to:
-            domain = [('date_order', '>=', docs.date_from),
-                      ('date_order', '<=', docs.date_to)]
+    @api.model
+    def _get_report_values(self, docids, data=None):
+        date_from = data['form']['date_from']
+        date_to = data['form']['date_to']
+        period = data['form']['period']
+        state = data['form']['state']
+        total_sale = 0.0
+        period_value = ''
+
+        if date_from and date_to:
+            domain = [('date_order', '>=', date_from),
+                      ('date_order', '<=', date_to)]
         else:
-            if docs.period == 'today':
+            if period == 'today':
                 domain = [('date_order', '>=', datetime.datetime.now()
                            .strftime('%Y-%m-%d 00:00:00')),('date_order',
                             '<=', datetime.datetime.now()
                             .strftime('%Y-%m-%d 23:59:59'))]
-            elif docs.period == 'last_week':
+                period_value = 'Today'
+            elif period == 'last_week':
                 domain = [('date_order', '>=', (datetime.date.today()
                 -datetime.timedelta(days=7)).strftime('%Y-%m-%d 00:00:00')),
                  ('date_order', '<=', datetime.datetime.now()
                   .strftime('%Y-%m-%d 23:59:59'))
                 ]
-            elif docs.period == 'last_month':
+                period_value = 'Last Week'
+            elif period == 'last_month':
                 domain = [
                     ('date_order', '>=',
                      (datetime.date.today() - relativedelta(months=1)).
@@ -59,21 +63,27 @@ class ReportPeriodicalSale(models.AbstractModel):
                     ('date_order', '<=',
                      datetime.datetime.now().strftime('%Y-%m-%d 23:59:59'))
                 ]
-        if docs.state != 'all':
-            domain.append(('state','=',docs.state))
+                period_value = 'Last Month'
+        if state != 'all':
+            domain.append(('state','=',state))
+
+        sale_orders = []
         orders = self.env['sale.order'].search(domain)
-        if orders:
-            for order in orders:
-                sales_records.append(order)
-                total_sale += order.amount_total
-        docargs = {
-            'doc_ids': self.ids,
-            'doc_model': self.model,
-            'docs': docs,
-            'orders': sales_records,
-            'total_sale':total_sale,
-            'date_from':docs.date_from,
-            'date_to':docs.date_to
+
+        for order in orders:
+            sale_orders.append({
+                'name': order.name,
+                'date_order': order.date_order,
+                'partner' : order.partner_id.name,
+                'amount_total' : order.amount_total
+            })
+            total_sale += order.amount_total
+        return {
+            'doc_ids': data['ids'],
+            'doc_model': data['model'],
+            'period' : period_value,
+            'date_from': date_from,
+            'date_to': date_to,
+            'sale_orders' : sale_orders,
+            'total_sale' : total_sale,
         }
-        return self.env['report'].render('periodical_sales_report.'
-                                         'report_periodical_sales', docargs)
