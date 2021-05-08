@@ -37,6 +37,7 @@ Also print report for particular duration.
     "license": "AGPL-3",
     'depends' : ['base_setup', 'report', 'sale'],
     'data': [
+        'security/periodic_report_security.xml',
         'wizard/wiz_periodical_report_view.xml',
         'views/periodical_report.xml',
         'views/report_periodical_sales.xml'
