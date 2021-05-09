@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_show_periodical_report" model="res.groups">
+        <field name="name">Periodical Report</field>
+        <field name="comment">Allow to show menu for print periodical report</field>
+        <field name="category_id" ref="base.module_category_extra"/>
+    </record>
+</odoo>
