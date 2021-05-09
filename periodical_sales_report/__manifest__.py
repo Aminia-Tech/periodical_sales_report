@@ -23,7 +23,7 @@
 
 {
     'name' : 'Periodical Sale Report',
-    'version' : '12.0.1',
+    'version' : '1.0.2',
     'summary': 'Module print daily, last week and last month sale report.',
     'sequence': 16,
     'category': 'Sales',
@@ -35,7 +35,7 @@ This module print daily, last week and last month sale report.
 Also print report for particular duration.
     """,
     "license": "AGPL-3",
-    'depends' : ['base_setup', 'sale_management'],
+    'depends' : ['base_setup', 'report', 'sale'],
     'data': [
         'security/periodic_report_security.xml',
         'wizard/wiz_periodical_report_view.xml',
